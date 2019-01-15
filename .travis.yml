@@ -7,8 +7,9 @@ cache:
 env:
   global:
     - REPONAME="$(basename ${TRAVIS_BUILD_DIR})" # /travis/build/kaushalmodi/hello_musl -> hello_musl
-    - NIMREPO="https://github.com/nim-lang/Nim"
-    - NIMVER="$(git ls-remote ${NIMREPO} devel | cut -f 1)"
+    - NIMREPO="https://github.com/timotheecour/Nim"
+    - NIMBRANCH="pr_fix_10030"
+    - NIMVER="$(git ls-remote ${NIMREPO} ${NIMBRANCH} | cut -f 1)"
     - NIMDIR="${TRAVIS_BUILD_DIR}/nim/${NIMVER}"
 
 install:
@@ -19,7 +20,7 @@ install:
     then
       rm -rf nim
       mkdir -p nim
-      git clone --single-branch --branch devel --depth=1 "${NIMREPO}" "${NIMDIR}"
+      git clone --single-branch --branch ${NIMBRANCH} --depth=1 "${NIMREPO}" "${NIMDIR}"
       cd "${NIMDIR}" || exit
       sh build_all.sh
       # After building nim, wipe csources to save on cache space.
